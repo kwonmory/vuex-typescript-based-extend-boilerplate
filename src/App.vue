@@ -1,32 +1,47 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+	<div id="app">
+		<div>
+			<h1>Apply Typescript in Vuex!</h1>
+			<section>
+				<ul>
+					<li>animal state : {{ $store.state.Animal.list }}</li>
+					<li>user state : {{ $store.state.User.list }}</li>
+				</ul>
+			</section>
+		</div>
+	</div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+import { UserMutationType } from './store/modules/user/mutation';
+import { AnimalMutationType } from './store/modules/animal/mutation';
+import { UserActionType } from './store/modules/user/action';
+import { AnimalActionType } from './store/modules/animal/action';
+import { AnimalGetterType } from './store/modules/animal/getter';
+
+export default Vue.extend({
+	created() {
+		// commit
+		this.$store.commit(UserMutationType.SET_LIST);
+		this.$store.commit(AnimalMutationType.SET_LIST);
+
+		// dispatch
+		this.$store.dispatch(UserActionType.FETCH_LIST, ['user1', 'user2']);
+		this.$store.dispatch(AnimalActionType.FETCH_LIST, ['animal1', 'animal2']);
+
+		// getter
+		console.log(this.$store.getters[AnimalGetterType.GET_LIST]);
+	},
+});
+</script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
 }
 </style>
